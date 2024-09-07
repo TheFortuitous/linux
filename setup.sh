@@ -4,7 +4,7 @@
 if [ "$EUID" -ne 0 ]; then
     echo "This script needs to be run as root or with sudo privileges."
     echo "Re-running the script with sudo..."
-    sudo bash "$0" "$@"
+    exec sudo bash "$0" "$@"
     exit
 fi
 
@@ -12,6 +12,14 @@ fi
 command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
+
+# Check if Git is installed
+if ! command_exists git; then
+    echo "Git is not installed. Installing Git..."
+    apt update && apt install -y git
+else
+    echo "Git is already installed."
+fi
 
 # Install Zsh if not installed
 if ! command_exists zsh; then
