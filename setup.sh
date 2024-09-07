@@ -57,7 +57,7 @@ fi
 
 # Download the Powerlevel10k configuration file (.p10k.zsh) from the given GitHub URL
 echo "Downloading Powerlevel10k configuration..."
-wget -O ~/.p10k.zsh https://raw.githubusercontent.com/TheFortuitous/linux/master/.p10k.zsh
+wget -O ~/.p10k.zsh https://raw.githubusercontent.com/abuschno/linux/master/.p10k.zsh
 
 # Ensure the .p10k.zsh is sourced in .zshrc
 if ! grep -q "source ~/.p10k.zsh" ~/.zshrc; then
