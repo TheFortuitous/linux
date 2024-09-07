@@ -1,14 +1,22 @@
 #!/bin/bash
 
+# Check if the script is run as root or with sudo privileges
+if [ "$EUID" -ne 0 ]; then
+    echo "This script needs to be run as root or with sudo privileges."
+    echo "Re-running the script with sudo..."
+    sudo bash "$0" "$@"
+    exit
+fi
+
 # Function to check if a command exists
 command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
-# Install Zsh
+# Install Zsh if not installed
 if ! command_exists zsh; then
     echo "Installing zsh..."
-    sudo apt update && sudo apt install -y zsh
+    apt update && apt install -y zsh
 else
     echo "Zsh is already installed."
 fi
@@ -16,7 +24,7 @@ fi
 # Install Oh My Zsh
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
     echo "Installing Oh My Zsh..."
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 else
     echo "Oh My Zsh is already installed."
 fi
@@ -49,7 +57,7 @@ fi
 
 # Download the Powerlevel10k configuration file (.p10k.zsh) from the given GitHub URL
 echo "Downloading Powerlevel10k configuration..."
-curl -o ~/.p10k.zsh https://raw.githubusercontent.com/TheFortuitous/linux/master/.p10k.zsh
+wget -O ~/.p10k.zsh https://raw.githubusercontent.com/TheFortuitous/linux/master/.p10k.zsh
 
 # Ensure the .p10k.zsh is sourced in .zshrc
 if ! grep -q "source ~/.p10k.zsh" ~/.zshrc; then
